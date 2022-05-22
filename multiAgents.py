@@ -185,6 +185,9 @@ class MinimaxAgent(MultiAgentSearchAgent):
         Taken action: {max_action}
         """
         )
+        if scores.count(max_utility) >= 2:
+            indices = [i for i, x in enumerate(scores) if x == max_utility]
+            return legal_actions[random.choice(indices)]
 
         return max_action
 
@@ -271,8 +274,9 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         Taken action: {max_action}
         """
         )
-        # if scores.count(max_utility) == len(legal_actions):
-        #     return random.choice(legal_actions)
+        if scores.count(max_utility) >= 2:
+            indices = [i for i, x in enumerate(scores) if x == max_utility]
+            return legal_actions[random.choice(indices)]
         return max_action
 
     def value(self, state: GameState, agentIndex: int, depth: int, alpha, beta):
@@ -373,7 +377,9 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         Taken action: {max_action}
         """
         )
-
+        if scores.count(max_utility) >= 2:
+            indices = [i for i, x in enumerate(scores) if x == max_utility]
+            return legal_actions[random.choice(indices)]
         return max_action
 
     def value(self, state: GameState, agentIndex: int, depth: int):
@@ -455,6 +461,8 @@ def betterEvaluationFunction(currentGameState: GameState):
     currentFoods = currentGameState.getFood()
     foodList = currentFoods.asList()
     closestFood = 0
+    secondClosestFood = 0
+
     if foodList:
         closestFood = min([manhattanDistance(pacmanPos, food) for food in foodList])
 
@@ -509,13 +517,15 @@ def betterEvaluationFunction(currentGameState: GameState):
         if distanceToClosestScaredGhost <= 2 and len(scaredGhosts) != 0
         else len(scaredGhosts) * 90
     )
+    # 1 food =10 point
+    # win = 500 point
     scores = np.array(
         [
             1 * currentGameState.getScore(),
-            -4.1 * closestFood,
-            -9.2 * closestCapsule,
-            -1.1 * 1 / distanceToClosestActiveGhost,
-            -3.4 * distanceToClosestScaredGhost,
+            -1.1 * closestFood,
+            -3.14 * closestCapsule,
+            -3.14 * 1 / distanceToClosestActiveGhost,
+            -9 * distanceToClosestScaredGhost,
             +1 * scaredScore,
             -5.3 * noBigDotLeft,
             -2.6 * noFoodLeft,
@@ -523,24 +533,19 @@ def betterEvaluationFunction(currentGameState: GameState):
     )
     score += np.sum(scores)
 
-    # if pacmanPos == (2, 5):
-    #     a = 3
-    # if pacmanPos == (3, 5):
-    #     a = 3
-    if "205.72499999" in str(score):
-        print(
-            f"""Game Score: {currentGameState.getScore()}
-    Closest Food: {closestFood}
-    Closest Capusle: {closestCapsule}
-    Closest active ghost: {distanceToClosestActiveGhost}
-    Closest scared ghost: {distanceToClosestScaredGhost}
-    Number of big dot left: {noBigDotLeft}
-    Number of food left: {noFoodLeft}
-    Number Scared ghosts: {len(scaredGhosts)}
-    Pacman Pos: {pacmanPos}
-    """
-        )
-        print(f"Score1: {score}\n")
+    #     print(
+    #         f"""Game Score: {currentGameState.getScore()}
+    # Closest Food: {closestFood}
+    # Closest Capusle: {closestCapsule}
+    # Closest active ghost: {distanceToClosestActiveGhost}
+    # Closest scared ghost: {distanceToClosestScaredGhost}
+    # Number of big dot left: {noBigDotLeft}
+    # Number of food left: {noFoodLeft}
+    # Number Scared ghosts: {len(scaredGhosts)}
+    # Pacman Pos: {pacmanPos}
+    # """
+    #     )
+    #     print(f"Score1: {score}\n")
     # print(f"Number Scared ghosts: {len(scaredGhosts)}")
 
     return score
