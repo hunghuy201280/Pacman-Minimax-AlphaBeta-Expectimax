@@ -1,0 +1,44 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "./pacman.py",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "args": [
+        "-l",
+        //"capsuleClassic",
+        //"contestClassic",
+        //"mediumClassic",
+        //"minimaxClassic",
+        //"openClassic",
+        "originalClassic",
+        //"powerClassic",
+        //"smallClassic",
+        //"testClassic",
+        //"trappedClassic",
+        //"trickyClassic",
+        "-p",
+        //"ExpectimaxAgent",
+        //"AlphaBetaAgent",
+        "MinimaxAgent",
+        //"-f",
+        //"-q",
+        "-n",
+        "5",
+        "-a",
+        //"evalFn=contestEvaluationFunc,depth=2",
+        "evalFn=betterEvaluationFunction,depth=2",
+        //"evalFn=scoreEvaluationFunction,depth=2",
+        "--frameTime",
+        "0"
+      ]
+    }
+  ]
+}
